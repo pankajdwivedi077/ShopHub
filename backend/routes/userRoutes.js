@@ -1,9 +1,14 @@
 import express from "express";
-import { createUser } from '../controllers/userController.js'
+import { createUser, loginUser, logoutCurrentUser, getAllUsers, getCurrentUserProfile, updateCurrentUserProfile } from '../controllers/userController.js'
+import { authenticate, authorizedAdmin } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
+router.route('/').post(createUser).get(authenticate, authorizedAdmin, getAllUsers);
+router.post('/auth', loginUser)
+router.post('/logout', logoutCurrentUser)
 
-router.route('/').post(createUser);
+router.route('/profile').get(authenticate, getCurrentUserProfile).put(authenticate, updateCurrentUserProfile);
 
 // router.post('/', createUser)
 

@@ -29,13 +29,24 @@ const Login = () => {
     }
   }, [navigate, redirect, userInfo]);
 
+  const submitHandler = async (e) => {
+    e.preventDefault()
+    try {
+        const res = await login({email, password}).unwrap()
+        console.log(res)
+        dispatch(setCredientials({...res}));
+    } catch (error) {
+        toast.error(error?.data?.message || error.message)
+    } 
+  }
+
   return (
     <div>
       <section className="pl-[10rem] flex flex-wrap">
         <div className="mr-[4rem] mt-[5rem]">
           <h1 className="text-2xl font-semibold mb-4">Sign in</h1>
 
-          <form className="container w-[40rem]">
+          <form onSubmit={submitHandler} className="container w-[40rem]">
 
             <div className="my-[2rem]">
               <label
@@ -74,6 +85,14 @@ const Login = () => {
             {isLoading && <Loader /> }
 
           </form>
+
+          <div className="mt-4">
+            <p className="text-black">
+                New Customer ? {" "}
+                <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="text-pink-500 hover:underline">Register</Link>
+            </p>
+          </div>
+
         </div>
       </section>
     </div>

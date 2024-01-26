@@ -25,7 +25,7 @@ const fileFilter = (req, file, cb) => {
   if (filetypes.test(extname) && mimetypes.test(mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Images only"), false);
+    cb(new Error("Images only"), false);  
   }
 };
 
